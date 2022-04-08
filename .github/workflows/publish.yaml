@@ -45,9 +45,9 @@ jobs:
           git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
           git config user.name "sample"
           git config user.email "sample@sample.com"
+          git add .
           if ! git diff --exit-code --quiet
           then
-            git add .
             git commit -m "message"
             git pull
             git push origin HEAD:${GITHUB_REF}
