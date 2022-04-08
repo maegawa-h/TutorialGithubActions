@@ -8,6 +8,7 @@
     <owners></owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>My package description.</description>
+    <RepositoryUrl> https://github.com/maegawa-h/TutorialGithubActions.git </ RepositoryUrl>
   </metadata>
   <files>
     <file src="Sample\NewFile.txt" target="Sample\NewFile.txt" />
