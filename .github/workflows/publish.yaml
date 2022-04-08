@@ -24,9 +24,9 @@ jobs:
           cd ./src/Sample
           nuget pack MyPackage.1.0.0.nuspec -OutputDirectory ../../packages
       
-      - name: Pack
-        run: |
-          dotnet pack MyGreatLib.csproj -o artifacts/
+#      - name: Pack
+#        run: |
+#          dotnet pack MyGreatLib.csproj -o artifacts/
 
 #      - uses: actions/upload-artifact@v1
 #        with:
