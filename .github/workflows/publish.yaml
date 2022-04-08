@@ -38,3 +38,17 @@ jobs:
           cd ./packages
           dotnet nuget add source "https://nuget.pkg.github.com/maegawa-h/index.json" -n "github" -u maegawa-h -p ${{secrets.GH_PACKAGES_PAT}} --store-password-in-clear-text
           dotnet nuget push "*.nupkg" --api-key ${{secrets.GH_PACKAGES_PAT}} --source "github" --skip-duplicate
+
+      - name: Commit & Push Packages
+        run: |
+          cd ./packages
+          git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+          git config user.name "sample"
+          git config user.email "sample@sample.com"
+          if ! git diff --exit-code --quiet
+          then
+            git add .
+            git commit -m "message"
+            git pull
+            git push origin HEAD:${GITHUB_REF}
+          fi
