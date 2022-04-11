@@ -1,0 +1,49 @@
+{
+	"$schema": "manifest.schema.json",
+
+	"name": "Ext", // TODO ここはすべてのエクステンションでユニークになるようにして下さい。
+	"main": "Ext.dll", // TODO ここはプロジェクトのアセンブリファイル名と同じにしてください。
+	
+	"lifecycle": "application",
+
+	"extensionPoints": {
+
+		"commands": [
+			{
+				"id": "Ext.HelloCommand",
+				"execFunc": "SayHello"
+			}
+		],
+
+		"events": {
+		},
+
+		"ribbon": {
+			"tabs": [
+				{
+					"id": "Ext.HelloTab",
+					"label": "Hello",
+
+					"groups": [
+						{
+							"id": "Ext.Group1",
+							"label": "Group1",
+
+							"controls": [
+								{
+									"id": "Ext.HelloButton",
+									"type": "button",
+									"label": "Hello",
+									"command": "Ext.HelloCommand"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+
+
+	}
+
+}
