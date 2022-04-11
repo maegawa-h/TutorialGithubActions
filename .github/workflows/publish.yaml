@@ -3,6 +3,7 @@ name: .NET
 on:
   push:
     tags:
+      - '*'
 
 jobs:
   build:
