@@ -2,6 +2,11 @@ name: .NET
 
 on:
   push:
+    tags:
+      - '*'
+    branches: [ publish ]
+  pull_request:
+    branches: [ publish ]
 
 jobs:
   build:
@@ -44,6 +49,9 @@ jobs:
         with:
           commit_message: Automated Change
           repository: ./packages/
+
+          skip_checkout: true
+          create_branch: true
 
           # Optional commit user and author settings
           commit_user_name: My GitHub Actions Bot # defaults to "GitHub Actions"
