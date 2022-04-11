@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    tags:
-      - '*'
-    branches: [ publish ]
+#    tags:
+#      - '*'
+#    branches: [ publish ]
 #  pull_request:
 #    branches: [ publish ]
 
