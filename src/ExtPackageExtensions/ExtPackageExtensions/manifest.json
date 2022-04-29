@@ -1,0 +1,6 @@
+{
+	"$schema": "manifest.schema.json",
+	"name": "ExtPackageExtensions",
+	"main": "ExtPackageExtensions.dll",
+	"lifecycle": "application"
+}
