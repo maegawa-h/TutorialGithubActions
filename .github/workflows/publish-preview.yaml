@@ -25,16 +25,17 @@ jobs:
         with:
           dotnet-version: '3.1.x'
 
-      # ndextのインストール (3.1) @https://docs.nextdesign.app/extension/docs/tools/ndext/installation
+      # ndextのインストール @https://docs.nextdesign.app/extension/docs/tools/ndext/installation
       - name: Setup NDext
         run: |
           dotnet tool install --global NDExt
           ndext install
 
+      # ビルドとパッケージング
       - name: Build & Pack (NDExt)
         run: |
           cd ./src/ExtPackage
-          ndext pack o ../../packages
+          ndext pack o ../../../packages
 
       - name: Build & Pack (proj)
         run: |
@@ -47,6 +48,7 @@ jobs:
           cd ./src/Sample
           nuget pack MyPackage.1.0.0.nuspec -OutputDirectory ../../packages
 
+      # パッケージのコミット
       - name: Commit & Push Packages
         if: ${{ always() }}
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -76,7 +78,7 @@ jobs:
         with:
           dotnet-version: '3.1.x'
 
-      # GitHub Packagesへのnupkgの登録
+      # Nugetサーバへのnupkgの登録
       - name: Publish to GitHub Packages
         run: |
           cd ./packages
