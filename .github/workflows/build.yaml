@@ -33,19 +33,24 @@ jobs:
       # ビルドとパッケージング
       - name: Build & Pack (NDExt)
         run: |
-          cd ./src/ExtPackage
-          ndext pack o ../../../packages
+          foreach ($dir in $(Get-ChildItem * | ? { $_.PSIsContainer }))
+          {
+            Push-Location $dir
+            ndext pack o ../../../packages
+            Pop-Location
+          }
 
-      - name: Build & Pack (proj)
-        run: |
-          cd ./src/Package
-          dotnet publish
-          nuget pack .\sample_ndext\Package.1.0.0.nuspec -OutputDirectory ../../packages
+#      NDExtを使用しているパッケージが前提
+#      - name: Build & Pack (proj)
+#        run: |
+#          cd ./src/Package
+#          dotnet publish
+#          nuget pack .\sample_ndext\Package.1.0.0.nuspec -OutputDirectory ../../packages
 
-      - name: Build & Pack (sample)
-        run: |
-          cd ./src/Sample
-          nuget pack MyPackage.1.0.0.nuspec -OutputDirectory ../../packages
+#      - name: Build & Pack (sample)
+#        run: |
+#          cd ./src/Sample
+#          nuget pack MyPackage.1.0.0.nuspec -OutputDirectory ../../packages
 
       # パッケージのコミット
       - name: Commit & Push Packages
