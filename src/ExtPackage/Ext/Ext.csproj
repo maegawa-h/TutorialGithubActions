@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <PackageId>Ext</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <PackageProjectUrl>https://www.your-web-here.com/</PackageProjectUrl>
     <Authors>Me</Authors>
     <Company>Me</Company>
@@ -12,6 +12,8 @@
     <Description>Extのタイトル
 ここからExtの説明を記載して下さい。
 </Description>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/maegawa-h/TutorialGithubActions.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
