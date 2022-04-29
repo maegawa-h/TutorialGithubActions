@@ -1,0 +1,88 @@
+name: build & publish
+
+on: 
+  workflow_dispatch
+#  push:
+#    paths:
+#      - 'src/Sample/**'
+#    tags:
+#      - '*'
+#    branches: [ publish ]
+#  pull_request:
+#    branches: [ publish ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:    
+      # リポジトリのチェックアウト
+      - uses: actions/checkout@v2
+    
+      # dotnetのインストール (3.1)
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      # ndextのインストール (3.1) @https://docs.nextdesign.app/extension/docs/tools/ndext/installation
+      - name: Setup NDext
+        run: |
+          dotnet tool install --global NDExt
+          ndext install
+
+      - name: Build & Pack (NDExt)
+        run: |
+          cd ./src/ExtPackage
+          ndext pack o ../../packages
+
+      - name: Build & Pack (proj)
+        run: |
+          cd ./src/Package
+          dotnet publish
+          nuget pack .\sample_ndext\Package.1.0.0.nuspec -OutputDirectory ../../packages
+
+      
+      - name: Build & Pack (sample)
+        run: |
+          cd ./src/Sample
+          nuget pack MyPackage.1.0.0.nuspec -OutputDirectory ../../packages
+
+      - name: Pack
+        run: |
+          dotnet pack MyGreatLib.csproj -o artifacts/
+
+      - name: Commit & Push Packages
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automated Change
+          repository: ./packages/
+
+          skip_checkout: true
+          create_branch: true
+
+          # Optional commit user and author settings
+          commit_user_name: My GitHub Actions Bot # defaults to "GitHub Actions"
+          commit_user_email: my-github-actions-bot@example.org # defaults to "actions@github.com"
+          commit_author: Author <actions@github.com> # defaults to author of the commit that triggered the run
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:    
+      # リポジトリのチェックアウト
+      - uses: actions/checkout@v2
+    
+      # dotnetのインストール (3.1)
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      # GitHub Packagesへのnupkgの登録
+      - name: Publish to GitHub Packages
+        run: |
+          cd ./packages
+          dotnet nuget add source "https://nuget.pkg.github.com/maegawa-h/index.json" -n "github" -u ${{secrets.GH_PACKAGES_USER}} -p ${{secrets.GH_PACKAGES_PAT}} --store-password-in-clear-text
+          dotnet nuget push "*.nupkg" --api-key ${{secrets.GH_PACKAGES_PAT}} --source "github" --skip-duplicate

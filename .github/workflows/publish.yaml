@@ -1,9 +1,10 @@
 name: .NET
 
 on:
-  push:
-    paths:
-      - 'src/Sample/**'
+  workflow_dispatch
+#  push:
+#    paths:
+#      - 'src/Sample/**'
 #    tags:
 #      - '*'
 #    branches: [ publish ]
@@ -15,12 +16,30 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:    
+      # リポジトリのチェックアウト
       - uses: actions/checkout@v2
     
+      # dotnetのインストール (3.1)
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '3.1.x'
+
+      # ndextのインストール (3.1) @https://docs.nextdesign.app/extension/docs/tools/ndext/installation
+      - name: Setup NDext
+        run: |
+          dotnet tool install --global NDExt
+          ndext install
+
+      # 実行
+      - name: Build
+        run: |
+          for DIR_NAME in $(ls ./); 
+          do 
+            pushd $DIR_NAME
+            ls ./
+            popd
+          done
 
 #      - name: Install dependencies
 #        run: |
