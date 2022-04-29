@@ -33,7 +33,11 @@ jobs:
       # ビルドとパッケージング
       - name: Build & Pack (NDExt)
         run: |
-          $pkg_dir = (Convert-Path .) + "packages"
+          $base_dir = (Convert-Path .)
+          $pkg_dir = $base_dir + "\packages\"
+          $src_dir = $base_dir + "\src\"
+
+          Push-Location $src_dir
           foreach ($dir in $(Get-ChildItem * | ? { $_.PSIsContainer }))
           {
             Push-Location $dir
@@ -41,19 +45,28 @@ jobs:
             {
               $xml_doc = [xml](cat $(Get-ChildItem *.csproj -Recurse) -enc utf8)
               $xml_nav = $xml_doc.CreateNavigator()
-              $pkg_name =  $xml_nav.Select("//PackageId")
-              $pkg_name += "."
-              $pkg_name += $xml_nav.Select("//Version") 
-              $pkg_name += ".nupkg"
 
+              $pkg_name = $pkg_dir
+              $pkg_name += $xml_nav.Select("//PackageId").Value
+              $pkg_name += "."
+              $pkg_name += $xml_nav.Select("//Version").Value
+              $pkg_name += ".nupkg"
+          
               if (!$(Test-Path $pkg_name))
               {
+                echo $pkg_name + "is not exist"
                 ndext pack o $pkg_dir
               }
-
+              else
+              {
+                  echo $pkg_name + "is exist"
+              }
+          
             }
             Pop-Location
           }
+          Pop-Location
+
 
 #      NDExtを使用しているパッケージが前提
 #      - name: Build & Pack (proj)
