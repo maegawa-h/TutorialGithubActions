@@ -33,10 +33,25 @@ jobs:
       # ビルドとパッケージング
       - name: Build & Pack (NDExt)
         run: |
+          $pkg_dir = (Convert-Path .) + "packages"
           foreach ($dir in $(Get-ChildItem * | ? { $_.PSIsContainer }))
           {
             Push-Location $dir
-            ndext pack o ../../../packages
+            if ($(Get-ChildItem *.csproj -Recurse | Test-Path))
+            {
+              $xml_doc = [xml](cat $(Get-ChildItem *.csproj -Recurse) -enc utf8)
+              $xml_nav = $xml_doc.CreateNavigator()
+              $pkg_name =  $xml_nav.Select("//PackageId")
+              $pkg_name += "."
+              $pkg_name += $xml_nav.Select("//Version") 
+              $pkg_name += ".nupkg"
+
+              if (!$(Test-Path $pkg_name))
+              {
+                ndext pack o $pkg_dir
+              }
+
+            }
             Pop-Location
           }
 
