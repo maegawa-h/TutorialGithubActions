@@ -1,6 +1,7 @@
 name: publish-preview
 
 on: 
+  workflow_dispatch:
   push:
     paths:
       - 'packages/**'
@@ -8,7 +9,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    needs: build
     
     steps:    
       # リポジトリのチェックアウト
