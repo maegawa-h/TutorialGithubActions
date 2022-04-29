@@ -42,17 +42,13 @@ jobs:
           dotnet publish
           nuget pack .\sample_ndext\Package.1.0.0.nuspec -OutputDirectory ../../packages
 
-      
       - name: Build & Pack (sample)
         run: |
           cd ./src/Sample
           nuget pack MyPackage.1.0.0.nuspec -OutputDirectory ../../packages
 
-      - name: Pack
-        run: |
-          dotnet pack MyGreatLib.csproj -o artifacts/
-
       - name: Commit & Push Packages
+        if: ${{ always() }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Automated Change
