@@ -10,8 +10,10 @@ jobs:
       # リポジトリのチェックアウト
       - uses: actions/checkout@v2
     
-      # dotnetのインストール (3.1)
+      # kazoechao のインストール (latest)
       - name: Setup kazoechao
         run: |
-          wget http://www.vector.co.jp/soft/dl/winnt/prog/se251853.html
+          Invoke-WebRequest -Uri "https://ftp.vector.co.jp/71/79/3284/kazoeciao.zip" -Outfile ".\kazoechao.zip"
+          Expand-Archive -Path .\kazoechao.zip -DestinationPath .\kazoechao
+
 
