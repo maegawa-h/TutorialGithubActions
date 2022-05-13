@@ -18,7 +18,7 @@ jobs:
       # リポジトリのチェックアウト(マージ対象)
       - uses: actions/checkout@v2
         with: 
-          path: ${{head_ref}}
+          path: ${{github.head_ref}}
 
       # kazoeciao のインストール (latest)
       - name: Setup kazoeciao
