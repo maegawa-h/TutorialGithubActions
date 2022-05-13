@@ -9,6 +9,9 @@ jobs:
     runs-on: windows-latest
     
     steps:    
+      - name: Dump GitHub context
+        run: echo '${{ toJSON(github) }}'
+
       # Start a Slack workflow using a webhook trigger
       # https://github.com/slackapi/slack-github-action
       - name: Send GitHub Action trigger data to Slack workflow
