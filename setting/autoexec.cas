@@ -1,9 +1,11 @@
 [SYSPATH]
 .\ciaosyst.dat
 [AFTPATH]
-..\base
+..\target\src\Package
+..\target\src\ExtPackageExtensions
 [BFRPATH]
-..\target
+..\base\src\Package
+..\base\src\ExtPackageExtensions
 [EXEMODE]
 1
 [RSLMODE]
