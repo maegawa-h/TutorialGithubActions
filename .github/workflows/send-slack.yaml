@@ -1,8 +1,8 @@
 name: send slack
 on: 
   pull_request:
-    branches: main
-    type: closed
+    branches: [main]
+    types: [closed]
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":github: ビルド結果: ${{ job.status }}\n\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "text": ":github: ビルド結果: ${{ job.status }}\n\n${GITHUB_SHA} - ${GITHUB_REF}",
               "blocks": [
                 {
                   "type": "section",
