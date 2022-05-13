@@ -7,13 +7,26 @@ jobs:
     runs-on: windows-latest
     
     steps:    
-      # リポジトリのチェックアウト
+      # リポジトリのチェックアウト(ベース)
       - uses: actions/checkout@v2
+        with: 
+          path: base
+          ref: main
     
-      # kazoechao のインストール (latest)
-      - name: Setup kazoechao
-        run: |
-          Invoke-WebRequest -Uri "https://ftp.vector.co.jp/71/79/3284/kazoeciao.zip" -Outfile ".\kazoechao.zip"
-          Expand-Archive -Path .\kazoechao.zip -DestinationPath .\kazoechao
+      # リポジトリのチェックアウト(マージ対象)
+      - uses: actions/checkout@v2
+        with: 
+          path: target
 
+      # kazoeciao のインストール (latest)
+      - name: Setup kazoeciao
+        run: |
+          Invoke-WebRequest -Uri "https://ftp.vector.co.jp/71/79/3284/kazoeciao.zip" -Outfile ".\kazoeciao.zip"
+          Expand-Archive -Path .\kazoeciao.zip -DestinationPath .\kazoeciao
+          ls
+          cd .\kazoeciao
+          mkdir .\tmp
+          .\kazoeciao.exe /a../setting/sample.cas | out-null
+          cd tmp
+          cat .\*.csv
 

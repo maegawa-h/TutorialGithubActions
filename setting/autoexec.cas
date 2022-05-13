@@ -1,0 +1,14 @@
+[SYSPATH]
+.\ciaosyst.dat
+[AFTPATH]
+..\base
+[BFRPATH]
+..\target
+[EXEMODE]
+1
+[RSLMODE]
+0
+[RSLPATH]
+.\tmp
+[MSGMODE]
+1
