@@ -29,9 +29,9 @@ jobs:
           cd ..\
           cd .\kazoeciao
           mkdir .\tmp
-          if (Test-Path ../base/setting/sample.cas)
+          if (Test-Path ../base/setting/autoexec.cas)
           {
-            .\kazoeciao.exe /a../base/setting/sample.cas | out-null
+            .\kazoeciao.exe /a../base/setting/autoexec.cas | out-null
             cd tmp
             cat .\*.csv
           }
