@@ -18,7 +18,8 @@ jobs:
       # リポジトリのチェックアウト(マージ対象)
       - uses: actions/checkout@v2
         with: 
-          path: ${{github.head_ref}}
+          path: target
+          ref: ${{github.head_ref}}
 
       # kazoeciao のインストール (latest)
       - name: Setup kazoeciao
@@ -26,10 +27,10 @@ jobs:
           Invoke-WebRequest -Uri "https://ftp.vector.co.jp/71/79/3284/kazoeciao.zip" -Outfile ".\kazoeciao.zip"
           Expand-Archive -Path .\kazoeciao.zip -DestinationPath .\kazoeciao
           Set-Location .\kazoeciao
-          mkdir .\tmp
+          New-Item .\tmp -ItemType Directory
           if (Test-Path ../target/setting/autoexec.cas)
           {
             .\kazoeciao.exe /a../target/setting/autoexec.cas | out-null
             Set-Location tmp
-            cat .\*.csv
+            Get-Content .\*.csv
           }
