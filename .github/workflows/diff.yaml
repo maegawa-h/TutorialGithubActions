@@ -32,6 +32,7 @@ jobs:
           {
             .\kazoeciao.exe /a../target/setting/autoexec.cas | out-null
             Set-Location tmp
+            ls
 
             # 全ステップ数の取得
             $all_step = Import-Csv .\Result*.csv -Encoding default `
