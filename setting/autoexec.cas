@@ -1,5 +1,5 @@
 [SYSPATH]
-.\ciaosyst.dat
+..\target\setting\AchievementMeasurementSys.dat
 [AFTPATH]
 ..\target\src\Package
 ..\target\src\ExtPackageExtensions
@@ -12,5 +12,7 @@
 0
 [RSLPATH]
 .\tmp
+[RSLNAME]
+Result
 [MSGMODE]
 1

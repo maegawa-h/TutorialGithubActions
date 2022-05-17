@@ -32,5 +32,44 @@ jobs:
           {
             .\kazoeciao.exe /a../target/setting/autoexec.cas | out-null
             Set-Location tmp
-            Get-Content .\*.csv
+
+            # 全ステップ数の取得
+            $all_step = Import-Csv .\Result.csv -Encoding default `
+             | Where-Object { $_.変更後パス名 -eq '全ステップ数' }
+
+            $TOTAL_NEW = $all_step.新規ステップ数
+            $TOTAL_MOD = $all_step.修正ステップ数
+            $TOTAL_DEL = $all_step.削除ステップ数
+
+            # 完全流用ステップ数の取得
+            Import-Csv .\Result.csv -Encoding default `
+             | Where-Object { $_.変更後パス名 -ne '全ステップ数' } `
+             | Where-Object { $_.変更後パス名 -ne '' } `
+             | Where-Object { $_.変更後パス名 -ne 'クラス数' } `
+             | Where-Object { $_.変更後パス名 -ne 'モジュール数' } `
+             | Where-Object { $_.修正元ステップ数 -eq '0' } `
+             | Export-Csv comp_div_output.csv -NoTypeInformation -Encoding default
+
+            $CSV_DATA = Get-Content -Path .\comp_div_output.csv -Encoding Default | ConvertFrom-Csv
+            $CSV_DATA | % { $TOTAL_COMPDIV += $_.流用ステップ数}
+
+            # 一部流用ステップ数の取得
+            Import-Csv .\Result.csv -Encoding default `
+             | Where-Object { $_.変更後パス名 -ne '全ステップ数' } `
+             | Where-Object { $_.変更後パス名 -ne '' } `
+             | Where-Object { $_.変更後パス名 -ne 'クラス数' } `
+             | Where-Object { $_.変更後パス名 -ne 'モジュール数' } `
+             | Where-Object { $_.修正元ステップ数 -ne '0' } `
+             | Export-Csv part_div_output.csv -NoTypeInformation -Encoding default
+
+            $CSV_DATA = Get-Content -Path .\part_div_output.csv -Encoding Default | ConvertFrom-Csv
+            $CSV_DATA | % { $TOTAL_PARTDIV += $_.流用ステップ数}
+
+
+            # 結果の出力
+            echo 新規ステップ数:$TOTAL_NEW
+            echo 修正ステップ数:$TOTAL_MOD
+            echo 削除ステップ数:$TOTAL_DEL
+            echo 完全流用ステップ数:$TOTAL_COMPDIV
+            echo 一部流用ステップ数:$TOTAL_PARTDIV
           }
