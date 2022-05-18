@@ -53,7 +53,7 @@
 [ALLCOUNT]
 0
 [OUTMODE]
-1
+0
 [OUTCMTMD]
 0
 [ANDSCH]
@@ -71,7 +71,7 @@
 [AUTOSTOP]
 0
 [CMTSPCCNT]
-0
+1
 [CMTSPCOUT]
 0
 [STPSVMODE]
@@ -81,7 +81,7 @@
 [CMTPERMODE]
 0
 [EXTFILE]
-10
+11
 ciao_c.edt
 ciao_h.edt
 ciao_cpp.edt
@@ -92,6 +92,7 @@ ciao_frm.edt
 ciao_asm.edt
 ciao_inc.edt
 ciao_java.edt
+ciao_cs.edt
 [FLDSVFLG]
 0
 [PATHCNT]
