@@ -35,7 +35,7 @@ jobs:
 
           if (Test-Path ./tmp/*.csv)
           {
-            $OutputEncoding.EncodingName
+            $OutputEncoding
             Set-Location tmp
             cat .\*.csv
 
@@ -54,7 +54,7 @@ jobs:
              | Where-Object { $_.変更後パス名 -ne 'クラス数' } `
              | Where-Object { $_.変更後パス名 -ne 'モジュール数' } `
              | Where-Object { $_.修正元ステップ数 -eq '0' } `
-             | Export-Csv comp_div_output.csv -NoTypeInformation -Encoding Ascii
+             | Export-Csv comp_div_output.csv -NoTypeInformation -Encoding utf8
 
             $TOTAL_COMPDIV = 0
             $CSV_DATA = Get-Content -Path .\comp_div_output.csv -Encoding Ascii | ConvertFrom-Csv
