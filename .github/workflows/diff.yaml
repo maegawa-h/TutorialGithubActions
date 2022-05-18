@@ -35,6 +35,7 @@ jobs:
 
           if (Test-Path ./tmp/*.csv)
           {
+            $OutputEncoding.EncodingName
             Set-Location tmp
             cat .\*.csv
 
