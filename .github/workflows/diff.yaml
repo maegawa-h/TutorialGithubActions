@@ -55,6 +55,7 @@ jobs:
              | Where-Object { $_.修正元ステップ数 -eq '0' } `
              | Export-Csv comp_div_output.csv -NoTypeInformation -Encoding default
 
+            $TOTAL_COMPDIV = 0
             $CSV_DATA = Get-Content -Path .\comp_div_output.csv -Encoding Default | ConvertFrom-Csv
             $CSV_DATA | % { $TOTAL_COMPDIV += $_.流用ステップ数}
 
@@ -67,6 +68,7 @@ jobs:
              | Where-Object { $_.修正元ステップ数 -ne '0' } `
              | Export-Csv part_div_output.csv -NoTypeInformation -Encoding default
 
+            $TOTAL_PARTDIV = 0
             $CSV_DATA = Get-Content -Path .\part_div_output.csv -Encoding Default | ConvertFrom-Csv
             $CSV_DATA | % { $TOTAL_PARTDIV += $_.流用ステップ数}
 
