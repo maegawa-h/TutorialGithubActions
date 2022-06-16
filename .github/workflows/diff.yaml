@@ -1,6 +1,8 @@
 name: diff
 on: 
-  workflow_dispatch
+  pull_request:
+    branches: [main]
+    types: [closed]
 
 jobs:
   build:
@@ -11,27 +13,78 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           path: base
-          ref: main
+          ref: ${{github.base_ref}}
     
       # リポジトリのチェックアウト(マージ対象)
       - uses: actions/checkout@v2
         with: 
           path: target
+          ref: ${{github.head_ref}}
 
       # kazoeciao のインストール (latest)
       - name: Setup kazoeciao
         run: |
           Invoke-WebRequest -Uri "https://ftp.vector.co.jp/71/79/3284/kazoeciao.zip" -Outfile ".\kazoeciao.zip"
           Expand-Archive -Path .\kazoeciao.zip -DestinationPath .\kazoeciao
-          ls
-          cd .\base
-          ls
-          cd ..\
-          cd .\kazoeciao
-          mkdir .\tmp
-          if (Test-Path ../base/setting/autoexec.cas)
+
+      # kazoeciaoによる成果量計測
+      - name: Measurement by kazoeciao
+        run: |
+          Push-Location .\kazoeciao
+          if (Test-Path ../target/setting/autoexec.cas)
           {
-            .\kazoeciao.exe /a../base/setting/autoexec.cas | out-null
-            cd tmp
-            cat .\*.csv
+            New-Item .\tmp -ItemType Directory
+            .\kazoeciao.exe /a../target/setting/autoexec.cas | out-null
+          }
+          Pop-Location
+
+      # 成果量計測結果の集計
+      - name: Aggregation of measurement results
+        run: |
+          if (Test-Path .\kazoeciao\tmp\*.csv)
+          {
+            Push-Location .\kazoeciao\tmp
+
+            # 全ステップ数の取得
+            $all_step = Import-Csv .\Result*.csv -Encoding shift-jis `
+             | Where-Object { $_.変更後パス名 -eq '全ステップ数' }
+
+            $TOTAL_NEW = $all_step.新規ステップ数
+            $TOTAL_MOD = $all_step.修正ステップ数
+            $TOTAL_DEL = $all_step.削除ステップ数
+
+            # 完全流用ステップ数の取得
+            Import-Csv .\Result*.csv -Encoding shift-jis `
+             | Where-Object { $_.変更後パス名 -ne '全ステップ数' } `
+             | Where-Object { $_.変更後パス名 -ne '' } `
+             | Where-Object { $_.変更後パス名 -ne 'クラス数' } `
+             | Where-Object { $_.変更後パス名 -ne 'モジュール数' } `
+             | Where-Object { $_.修正元ステップ数 -eq '0' } `
+             | Export-Csv comp_div_output.csv -NoTypeInformation -Encoding shift-jis
+
+            $TOTAL_COMPDIV = 0
+            $CSV_DATA = Get-Content -Path .\comp_div_output.csv -Encoding shift-jis | ConvertFrom-Csv
+            $CSV_DATA | % { $TOTAL_COMPDIV += $_.流用ステップ数}
+
+            # 一部流用ステップ数の取得
+            Import-Csv .\Result*.csv -Encoding shift-jis `
+             | Where-Object { $_.変更後パス名 -ne '全ステップ数' } `
+             | Where-Object { $_.変更後パス名 -ne '' } `
+             | Where-Object { $_.変更後パス名 -ne 'クラス数' } `
+             | Where-Object { $_.変更後パス名 -ne 'モジュール数' } `
+             | Where-Object { $_.修正元ステップ数 -ne '0' } `
+             | Export-Csv part_div_output.csv -NoTypeInformation -Encoding shift-jis
+
+            $TOTAL_PARTDIV = 0
+            $CSV_DATA = Get-Content -Path .\part_div_output.csv -Encoding shift-jis | ConvertFrom-Csv
+            $CSV_DATA | % { $TOTAL_PARTDIV += $_.流用ステップ数}
+
+            # 結果の出力
+            echo 新規ステップ数:$TOTAL_NEW
+            echo 修正ステップ数:$TOTAL_MOD
+            echo 削除ステップ数:$TOTAL_DEL
+            echo 完全流用ステップ数:$TOTAL_COMPDIV
+            echo 一部流用ステップ数:$TOTAL_PARTDIV
+
+            Pop-Location
           }
