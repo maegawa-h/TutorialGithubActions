@@ -6,23 +6,22 @@ jobs:
   Build1:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-      echo Build1
+    - run: echo Build1
 
   Build2:
     runs-on: ubuntu-latest
     needs: Build1
     steps:
-    - run: |
-      echo Build2
+    - run: echo Build2
 
   Build3:
     runs-on: ubuntu-latest
     if: ${{ failure() }}
     steps:
-    - run: |
-      echo ${{job.status}}
-      echo ${{github.action_status}}
+    - name: notify
+      run: |
+        echo ${{job.status}}
+        echo ${{github.action_status}}
 
   Build4:
     runs-on: ubuntu-latest
@@ -30,8 +29,8 @@ jobs:
     needs: Build2
     steps:
     - run: |
-      echo ${{job.status}}
-      echo ${{github.action_status}}
+        echo ${{job.status}}
+        echo ${{github.action_status}}
 
   Build5:
     runs-on: ubuntu-latest
@@ -39,5 +38,5 @@ jobs:
     needs: Build2
     steps:
     - run: |
-      echo ${{job.status}}
-      echo ${{github.action_status}}
+        echo ${{job.status}}
+        echo ${{github.action_status}}
