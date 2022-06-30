@@ -6,7 +6,7 @@ jobs:
   Build1:
     runs-on: ubuntu-latest
     steps:
-    - run: echo Build1
+    - run: exit 1
 
   Build2:
     runs-on: ubuntu-latest
