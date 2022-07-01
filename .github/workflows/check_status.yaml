@@ -6,7 +6,20 @@ jobs:
   Build1:
     runs-on: ubuntu-latest
     steps:
-    - run: exit 1
+    - run: |
+      # Install chocolatey
+      if (! (Get-Command "choco" -ErrorAction Ignore)) {
+          Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+      }
+      $env:ChocolateyInstall = Convert-Path "$((Get-Command 'choco').path)\..\.."
+      Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+
+      # NodeJS / yarn
+      cinst nodejs-lts -y
+      cinst yarn -y
+
+      # Update PATH environment
+      refreshenv        
 
   Build2:
     runs-on: ubuntu-latest
