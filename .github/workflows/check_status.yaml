@@ -3,30 +3,20 @@ on:
   workflow_dispatch
 
 jobs:
+  environment: 
+    VERSION: "2.0"
+
   Build1:
     runs-on: windows-latest
     steps:
     - name: notify
-      run: |
-        # Install chocolatey
-        if (! (Get-Command "choco" -ErrorAction Ignore)) {
-            Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-        }
-        $env:ChocolateyInstall = Convert-Path "$((Get-Command 'choco').path)\..\.."
-        Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-
-        # NodeJS / yarn
-        cinst nodejs-lts -y
-        cinst yarn -y
-
-        # Update PATH environment
-        refreshenv        
+      run: echo ${VERSION}
 
   Build2:
     runs-on: ubuntu-latest
     needs: Build1
     steps:
-    - run: echo Build2
+    - run: echo ${VERSION}
 
   Build3:
     runs-on: ubuntu-latest
