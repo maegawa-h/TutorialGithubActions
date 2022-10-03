@@ -1,0 +1,17 @@
+{
+  "Type": "Model",
+  "TopElementId": "7dce9952-cdbf-4a14-bf53-f4001ba46f4a",
+  "SchemaVersion": "11.0",
+  "Entities": [
+    {
+      "Id": "7dce9952-cdbf-4a14-bf53-f4001ba46f4a",
+      "EntityType": "Entity",
+      "Name": "BBB",
+      "MetamodelId": "e153739e-1667-4765-9ea7-85179a6af968",
+      "Metamodel": "BBB",
+      "Fields": {
+        "Name": "BBB"
+      }
+    }
+  ]
+}
