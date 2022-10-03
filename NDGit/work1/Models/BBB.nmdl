@@ -10,7 +10,8 @@
       "MetamodelId": "e153739e-1667-4765-9ea7-85179a6af968",
       "Metamodel": "BBB",
       "Fields": {
-        "Name": "BBB"
+        "Name": "BBB",
+        "Description": "bbb"
       }
     }
   ]
