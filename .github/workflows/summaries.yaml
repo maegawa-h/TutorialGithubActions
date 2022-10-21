@@ -17,6 +17,6 @@ jobs:
           echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
 
           echo "<div class=\"iframe-wrap\">"  >> $GITHUB_STEP_SUMMARY
-          echo "<iframe width=\"675\" height=\"380\" src=\"https://www.youtube.com/embed/_AQXQDjw7Y8\"></iframe>"  >> $GITHUB_STEP_SUMMARY
+          echo "<iframe width=\"675\" height=\"380\" src=\"https://www.youtube.com/embed/_AQXQDjw7Y8\" /> U+0020"  >> $GITHUB_STEP_SUMMARY
           echo "</div>" >> $GITHUB_STEP_SUMMARY
 
