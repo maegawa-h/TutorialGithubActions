@@ -15,3 +15,6 @@ jobs:
           echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
           echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
           echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
+
+          echo "<div class=""iframe-wrap""><iframe width=""675"" height=""380"" src=""https://www.youtube.com/embed/_AQXQDjw7Y8?start=5&amp;end=10&amp;"" frameborder=""1"" allow=""accelerometer; autoplay; encrypted‑media; gyroscope; picture‑in‑picture"" allowfullscreen></iframe>" >> $GITHUB_STEP_SUMMARY
+
