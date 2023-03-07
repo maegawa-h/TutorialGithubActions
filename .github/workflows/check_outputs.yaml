@@ -1,0 +1,20 @@
+name: check_outputs
+on: 
+  workflow_dispatch
+
+env: 
+  VERSION: 2.0
+
+jobs:
+  Build1:
+    runs-on: windows-latest
+    steps:
+    - name: notify
+      id: update-project-version
+      run: |
+        echo ${{env.VERSION}}
+        Write-Output new_version_no=12 >> $GITHUB_OUTPUT
+
+    - name: second
+      run: | 
+        echo ${{ steps.update-project-version.outputs.new_version_no }}
