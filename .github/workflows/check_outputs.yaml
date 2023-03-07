@@ -12,9 +12,9 @@ jobs:
     - name: notify
       id: update-project-version
       run: |
-        echo ${{env.VERSION}}
+        Write-Output ${{ env.VERSION }}
         Write-Output new_version_no=12 >> $GITHUB_OUTPUT
 
     - name: second
       run: | 
-        echo ${{ steps.update-project-version.outputs.new_version_no }}
+        Write-Output ${{ steps.update-project-version.outputs.new_version_no }}
