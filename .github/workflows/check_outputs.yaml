@@ -13,7 +13,7 @@ jobs:
       id: update-project-version
       run: |
         Write-Output ${{ env.VERSION }}
-        $GITHUB_OUTPUT = new_version_no=12 
+        $Env:GITHUB_OUTPUT="new_version_no=12" 
 
     - name: second
       run: | 
